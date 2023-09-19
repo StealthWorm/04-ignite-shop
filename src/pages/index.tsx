@@ -44,82 +44,89 @@ export default function Home({ products }: HomeProps) {
         <span>Enviar</span>
       </Button>
 
-       <HomeContainer ref={sliderRef}  className="keen-slider">
+      <HomeContainer ref={sliderRef} className="keen-slider">
         {/* {products.map(product => {
           return ( */}
-            {/* // <Link href={`/product/${product.id}`} key={product.id} prefetch={false}> */}
-              <Product  className="keen-slider__slide">
-                <Image src={camiseta1} width={520} height={480} alt="" />
+        {/* // <Link href={`/product/${product.id}`} key={product.id} prefetch={false}> */}
+        <Product className="keen-slider__slide">
+          <Image src={camiseta1} width={520} height={480} alt="" />
 
-                <footer>
-                {/* {product.name} */}
-                  <strong>produto</strong> 
-                  {/* {product.price} */}
-                  <span>preço</span>
-                </footer>
-              </Product>
-              <Product  className="keen-slider__slide">
-                <Image src={camiseta1} width={520} height={480} alt="" />
+          <footer>
+            {/* {product.name} */}
+            <strong>produto</strong>
+            {/* {product.price} */}
+            <span>preço</span>
+          </footer>
+        </Product>
+        <Product className="keen-slider__slide">
+          <Image src={camiseta1} width={520} height={480} alt="" />
 
-                <footer>
-                {/* {product.name} */}
-                  <strong>produto</strong> 
-                  {/* {product.price} */}
-                  <span>preço</span>
-                </footer>
-              </Product>
-              <Product  className="keen-slider__slide">
-                <Image src={camiseta1} width={520} height={480} alt="" />
+          <footer>
+            {/* {product.name} */}
+            <strong>produto</strong>
+            {/* {product.price} */}
+            <span>preço</span>
+          </footer>
+        </Product>
+        <Product className="keen-slider__slide">
+          <Image src={camiseta1} width={520} height={480} alt="" />
 
-                <footer>
-                {/* {product.name} */}
-                  <strong>produto</strong> 
-                  {/* {product.price} */}
-                  <span>preço</span>
-                </footer>
-              </Product>
-              <Product  className="keen-slider__slide">
-                <Image src={camiseta1} width={520} height={480} alt="" />
+          <footer>
+            {/* {product.name} */}
+            <strong>produto</strong>
+            {/* {product.price} */}
+            <span>preço</span>
+          </footer>
+        </Product>
+        <Product className="keen-slider__slide">
+          <Image src={camiseta1} width={520} height={480} alt="" />
 
-                <footer>
-                {/* {product.name} */}
-                  <strong>produto</strong> 
-                  {/* {product.price} */}
-                  <span>preço</span>
-                </footer>
-              </Product>
-            {/* // </Link> */}
-          {/* )
+          <footer>
+            {/* {product.name} */}
+            <strong>produto</strong>
+            {/* {product.price} */}
+            <span>preço</span>
+          </footer>
+        </Product>
+        {/* // </Link> */}
+        {/* )
         })} */}
       </HomeContainer>
     </>
   )
 }
 
-// export const getStaticProps: GetStaticProps = async () => {
-// const response = await stripe.products.list({
-//   expand: ['data.default_price']
-// });
+/* 
+  next fonciona com um servidor NODE entre o front e o back, que "guarda" informações para serem exibidas sem que
+   seja preciso realizar outra requisição ao servidor. Para acessar esses dados do servidor, usamos as props
+   GetStaticProps e GetServerSideProps
+
+   com o GetServerSideProps definimos que a tela 
+*/
+export const getStaticProps: GetStaticProps = async () => {
+  // const response = await stripe.products.list({
+  //   expand: ['data.default_price']
+  // });
 
 
-// const products = response.data.map(product => {
-//   const price = product.default_price as Stripe.Price;
+  const products = response.data.map(product => {
+    //   const price = product.default_price as Stripe.Price;
 
-//   return {
-//     id: product.id,
-//     name: product.name,
-//     imageUrl: product.images[0],
-//     price: new Intl.NumberFormat('pt-BR', {
-//       style: 'currency',
-//       currency: 'BRL'
-//     }).format(price.unit_amount / 100),
-//   }
-// })
+    //   return {
+    //     id: product.id,
+    //     name: product.name,
+    //     imageUrl: product.images[0],
+    //     price: new Intl.NumberFormat('pt-BR', {
+    //       style: 'currency',
+    //       currency: 'BRL'
+    //     }).format(price.unit_amount / 100),
+    //   }
+  })
 
-// return {
-//   props: {
-//     products
-//   },
-//   revalidate: 60 * 60 * 2 // 2 hours,
-// }
-// }
+  return {
+    props: {
+      products
+    },
+    revalidate: 60 * 60 * 2 // 2 hours,
+  }
+}
