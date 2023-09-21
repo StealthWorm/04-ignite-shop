@@ -43,9 +43,9 @@ export default function Product({ product }: ProductProps) {
 
   return (
     <>
-      {/* <Head>
+      <Head>
         <title>{product.name} | Ignite Shop</title>
-      </Head> */}
+      </Head>
       Product: {JSON.stringify(query)}
       {/* <ProductContainer>
         <ImageContainer>

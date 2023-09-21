@@ -1,21 +1,15 @@
+import { GetStaticProps } from "next"
 import Image from "next/future/image"
 import Head from 'next/head'
-import { GetStaticProps } from "next"
 import Link from "next/link"
 
 import { useKeenSlider } from 'keen-slider/react'
 
-// import { stripe } from "../lib/stripe"
+import { stripe } from "../lib/stripe"
 import { HomeContainer, Product, Button } from "../styles/pages/home"
 
 import 'keen-slider/keen-slider.min.css'
-import { styled } from "../styles"
-// import Stripe from "stripe"
-
-import camiseta1 from '../assets/camisa1.png'
-import camiseta2 from '../assets/camisa2.png'
-import camiseta3 from '../assets/camisa3.png'
-import camiseta4 from '../assets/camisa4.png'
+import Stripe from "stripe"
 
 interface HomeProps {
   products: {
@@ -40,57 +34,26 @@ export default function Home({ products }: HomeProps) {
         <title>Home | Ignite Shop</title>
       </Head>
 
-      <Button>
+      {/* <Button>
         <span>Enviar</span>
-      </Button>
+      </Button> */}
 
       <HomeContainer ref={sliderRef} className="keen-slider">
-        {/* {products.map(product => {
-          return ( */}
-        {/* // <Link href={`/product/${product.id}`} key={product.id} prefetch={false}> */}
-        <Product className="keen-slider__slide">
-          <Image src={camiseta1} width={520} height={480} alt="" />
+        {products.map(product => {
+          return (
+            // o Link do Next permite redirecionar sem recarregar toda a pagina, preferivel ao infes de usar ancora direto
+            <Link href={`/product/${product.id}`} key={product.id} prefetch={false}>
+              <Product className="keen-slider__slide">
+                <Image src={product.imageUrl} blurDataURL={product.imageUrl} width={520} height={480} alt="" placeholder="blur" />
 
-          <footer>
-            {/* {product.name} */}
-            <strong>produto</strong>
-            {/* {product.price} */}
-            <span>preço</span>
-          </footer>
-        </Product>
-        <Product className="keen-slider__slide">
-          <Image src={camiseta1} width={520} height={480} alt="" />
-
-          <footer>
-            {/* {product.name} */}
-            <strong>produto</strong>
-            {/* {product.price} */}
-            <span>preço</span>
-          </footer>
-        </Product>
-        <Product className="keen-slider__slide">
-          <Image src={camiseta1} width={520} height={480} alt="" />
-
-          <footer>
-            {/* {product.name} */}
-            <strong>produto</strong>
-            {/* {product.price} */}
-            <span>preço</span>
-          </footer>
-        </Product>
-        <Product className="keen-slider__slide">
-          <Image src={camiseta1} width={520} height={480} alt="" />
-
-          <footer>
-            {/* {product.name} */}
-            <strong>produto</strong>
-            {/* {product.price} */}
-            <span>preço</span>
-          </footer>
-        </Product>
-        {/* // </Link> */}
-        {/* )
-        })} */}
+                <footer>
+                  <strong>{product.name}</strong>
+                  <span>{product.price}</span>
+                </footer>
+              </Product>
+            </Link>
+          )
+        })}
       </HomeContainer>
     </>
   )
@@ -98,29 +61,30 @@ export default function Home({ products }: HomeProps) {
 
 /* 
   next fonciona com um servidor NODE entre o front e o back, que "guarda" informações para serem exibidas sem que
-   seja preciso realizar outra requisição ao servidor. Para acessar esses dados do servidor, usamos as props
-   GetStaticProps e GetServerSideProps
+  seja preciso realizar outra requisição ao servidor. Para acessar esses dados do servidor, usamos as props
+  GetStaticProps e GetServerSideProps
 
-   com o GetServerSideProps definimos que a tela 
-*/
+  GetStaticProps, diferente do GetServerSideProps não executa toda vez que a tela/requisição for chamada, 
+  mas sim no momento em que o Next estiver criando uma versão estatica(em cache) da página (ao rodar build, por exemplo)
+  */
 export const getStaticProps: GetStaticProps = async () => {
-  // const response = await stripe.products.list({
-  //   expand: ['data.default_price']
-  // });
-
+  // await new Promise((resolve) => setTimeout(resolve, 2000))
+  const response = await stripe.products.list({
+    expand: ['data.default_price']
+  });
 
   const products = response.data.map(product => {
-    //   const price = product.default_price as Stripe.Price;
+    const price = product.default_price as Stripe.Price;
 
-    //   return {
-    //     id: product.id,
-    //     name: product.name,
-    //     imageUrl: product.images[0],
-    //     price: new Intl.NumberFormat('pt-BR', {
-    //       style: 'currency',
-    //       currency: 'BRL'
-    //     }).format(price.unit_amount / 100),
-    //   }
+    return {
+      id: product.id,
+      name: product.name,
+      imageUrl: product.images[0],
+      price: new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }).format(price.unit_amount / 100),
+    }
   })
 
   return {
