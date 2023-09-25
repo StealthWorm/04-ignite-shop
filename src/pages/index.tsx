@@ -42,6 +42,10 @@ export default function Home({ products }: HomeProps) {
         {products.map(product => {
           return (
             // o Link do Next permite redirecionar sem recarregar toda a pagina, preferivel ao inves de usar ancora direto
+            /* em build, o "prefetch" faz as requisições a partir do momento que identifica um Link em tela, mesmo que estes não tenham sido
+               definidos no static paths. Isso pode causar elntidão caso a tela possua muitos links, por isso deve ser observado caso a caso
+               para deixa-lo como FALSE
+            */
             <Link href={`/product/${product.id}`} key={product.id} prefetch={false}>
               <Product className="keen-slider__slide">
                 <Image src={product.imageUrl} blurDataURL={product.imageUrl} width={520} height={480} alt="" placeholder="blur" />

@@ -20,26 +20,35 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-  const { query } = useRouter()
+  const { query, isFallback } = useRouter()
+
+  // é possivel acessar a prop "isFallback" do useRouter
+  // Quando o fallback do static paths esta como "true", ele define o "loading" até o conteudo ser carregado
+  if (isFallback) {
+    return <p>Loading...</p>
+  }
   // const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
 
-  // async function handleBuyButton() {
-  //   try {
-  //     setIsCreatingCheckoutSession(true);
+  async function handleBuyButton() {
+    //   try {
+    //     setIsCreatingCheckoutSession(true);
 
-  //     const response = await axios.post('/api/checkout', {
-  //       priceId: product.defaultPriceId,
-  //     })
+    //     const response = await axios.post('/api/checkout', {
+    //       priceId: product.defaultPriceId,
+    //     })
 
-  //     const { checkoutUrl } = response.data;
+    //     const { checkoutUrl } = response.data;
 
-  //     window.location.href = checkoutUrl;
-  //   } catch (err) {
-  //     setIsCreatingCheckoutSession(false);
+    //     window.location.href = checkoutUrl;
+    //   } catch (err) {
+    //     setIsCreatingCheckoutSession(false);
 
-  //     alert('Falha ao redirecionar ao checkout!')
-  //   }
-  // }
+    //     alert('Falha ao redirecionar ao checkout!')
+    //   }
+
+    console.log(product.defaultPriceId)
+  }
+
 
   return (
     <>
@@ -57,9 +66,8 @@ export default function Product({ product }: ProductProps) {
           <span>{product.price}</span>
 
           <p>{product.description}</p>
-
-          {/* disabled={isCreatingCheckoutSession} onClick={handleBuyButton} */}
-          <button>
+          {/* disabled={isCreatingCheckoutSession} */}
+          <button onClick={handleBuyButton}>
             Comprar agora
           </button>
         </ProductDetails>
@@ -70,11 +78,13 @@ export default function Product({ product }: ProductProps) {
 
 // metodo que devolve parametros passados pelo formato do arquivo "[id]"
 export const getStaticPaths: GetStaticPaths = async () => {
+  // Alternativa 1 - BUSCAR SOMENTE PRODUTOS MAIS VENDIDOS / MAIS ACESSADOS
+
   return {
     paths: [
-      { params: { id: 'prod_MLH5Wy0Y97hDAC' } },
+      { params: { id: 'prod_MLH5Wy0Y97hDAC' } }, // voce só preenche essa lista com os dados essenciais para serem buscados, evitando telas em branco, sendo possivel deixar vazio
     ],
-    fallback: 'blocking',
+    fallback: 'blocking', // não mostra nada em tela até ter algo para mostrar
   }
 }
 
