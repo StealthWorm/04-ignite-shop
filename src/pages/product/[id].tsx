@@ -47,7 +47,7 @@ export default function Product({ product }: ProductProps) {
         <title>{product.name} | Ignite Shop</title>
       </Head>
       Product: {JSON.stringify(query)}
-      {/* <ProductContainer>
+      <ProductContainer>
         <ImageContainer>
           <Image src={product.imageUrl} width={520} height={480} alt="" />
         </ImageContainer>
@@ -58,47 +58,51 @@ export default function Product({ product }: ProductProps) {
 
           <p>{product.description}</p>
 
-          <button disabled={isCreatingCheckoutSession} onClick={handleBuyButton}>
+          {/* disabled={isCreatingCheckoutSession} onClick={handleBuyButton} */}
+          <button>
             Comprar agora
           </button>
         </ProductDetails>
-      </ProductContainer> */}
+      </ProductContainer>
     </>
   )
 }
 
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   return {
-//     paths: [
-//       { params: { id: 'prod_MLH5Wy0Y97hDAC' } },
-//     ],
-//     fallback: 'blocking',
-//   }
-// }
+// metodo que devolve parametros passados pelo formato do arquivo "[id]"
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [
+      { params: { id: 'prod_MLH5Wy0Y97hDAC' } },
+    ],
+    fallback: 'blocking',
+  }
+}
 
-// export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ params }) => {
-//   const productId = params.id;
+// o  primeiro parametro "any" é o tipo do retorno do "props"
+// o segundo é o formato do objeto do "params"
+export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ params }) => {
+  const productId = params.id;
 
-//   const product = await stripe.products.retrieve(productId, {
-//     expand: ['default_price']
-//   });
+  const product = await stripe.products.retrieve(productId, {
+    expand: ['default_price']
+  });
 
-//   const price = product.default_price as Stripe.Price;
+  const price = product.default_price as Stripe.Price;
 
-//   return {
-//     props: {
-//       product: {
-//         id: product.id,
-//         name: product.name,
-//         imageUrl: product.images[0],
-//         price: new Intl.NumberFormat('pt-BR', {
-//           style: 'currency',
-//           currency: 'BRL'
-//         }).format(price.unit_amount / 100),
-//         description: product.description,
-//         defaultPriceId: price.id
-//       }
-//     },
-//     revalidate: 60 * 60 * 1 // 1 hours
-//   }
-// }
+  return {
+    props: {
+      product: {
+        id: product.id,
+        name: product.name,
+        imageUrl: product.images[0],
+        price: new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        }).format(price.unit_amount / 100),
+        description: product.description,
+        defaultPriceId: price.id
+      }
+    },
+    revalidate: 60 * 60 * 1 // 1 hours
+  }
+}

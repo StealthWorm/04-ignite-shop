@@ -41,7 +41,7 @@ export default function Home({ products }: HomeProps) {
       <HomeContainer ref={sliderRef} className="keen-slider">
         {products.map(product => {
           return (
-            // o Link do Next permite redirecionar sem recarregar toda a pagina, preferivel ao infes de usar ancora direto
+            // o Link do Next permite redirecionar sem recarregar toda a pagina, preferivel ao inves de usar ancora direto
             <Link href={`/product/${product.id}`} key={product.id} prefetch={false}>
               <Product className="keen-slider__slide">
                 <Image src={product.imageUrl} blurDataURL={product.imageUrl} width={520} height={480} alt="" placeholder="blur" />
@@ -69,8 +69,9 @@ export default function Home({ products }: HomeProps) {
   */
 export const getStaticProps: GetStaticProps = async () => {
   // await new Promise((resolve) => setTimeout(resolve, 2000))
+  
   const response = await stripe.products.list({
-    expand: ['data.default_price']
+    expand: ['data.default_price'] // estou usando "data".default_price pois é uma lista
   });
 
   const products = response.data.map(product => {
