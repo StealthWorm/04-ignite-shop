@@ -17,8 +17,7 @@ interface SuccessProps {
 export default function Success({ costumerName, product }: SuccessProps) {
   return (
     <>
-    success
-      {/* <Head>
+      <Head>
         <title>Compra efetuada | Ignite Shop</title>
 
         <meta name="robots" content="noindex" />
@@ -28,17 +27,17 @@ export default function Success({ costumerName, product }: SuccessProps) {
         <h1>Compra efetuada</h1>
 
         <ImageContainer>
-          <Image src={product.imageUrl} width={120} height={110} alt="" />
+          {/* <Image src={product.imageUrl} width={120} height={110} alt="" /> */}
         </ImageContainer>
 
         <p>
-          Uhuul <strong>{costumerName}</strong>, sua <strong>{product.name}</strong> já está a caminho da sua casa.
+          {/* Uhuul <strong>{costumerName}</strong>, sua <strong>{product.name}</strong> já está a caminho da sua casa. */}
         </p>
 
         <Link href="/">
           Voltar ao catálogo
         </Link>
-      </SuccessContainer> */}
+      </SuccessContainer>
     </>
   )
 }

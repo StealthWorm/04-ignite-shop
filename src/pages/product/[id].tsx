@@ -20,31 +20,31 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-  const { query, isFallback } = useRouter()
-
+  const { query } = useRouter()
   // é possivel acessar a prop "isFallback" do useRouter
   // Quando o fallback do static paths esta como "true", ele define o "loading" até o conteudo ser carregado
-  if (isFallback) {
-    return <p>Loading...</p>
-  }
-  // const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
+  // if (isFallback) {
+  //   return <p>Loading...</p>
+  // }
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
 
   async function handleBuyButton() {
-    //   try {
-    //     setIsCreatingCheckoutSession(true);
+    try {
+      setIsCreatingCheckoutSession(true);
 
-    //     const response = await axios.post('/api/checkout', {
-    //       priceId: product.defaultPriceId,
-    //     })
+      const response = await axios.post('/api/checkout', {
+        priceId: product.defaultPriceId,
+      })
 
-    //     const { checkoutUrl } = response.data;
+      const { checkoutUrl } = response.data;
 
-    //     window.location.href = checkoutUrl;
-    //   } catch (err) {
-    //     setIsCreatingCheckoutSession(false);
+      // se fosse redirencionar para uma pg. externa usariamos o router.push('/rota') vindo do useRouter()
+      window.location.href = checkoutUrl;
+    } catch (err) {
+      setIsCreatingCheckoutSession(false);
 
-    //     alert('Falha ao redirecionar ao checkout!')
-    //   }
+      alert('Falha ao redirecionar ao checkout!')
+    }
 
     console.log(product.defaultPriceId)
   }
@@ -66,8 +66,7 @@ export default function Product({ product }: ProductProps) {
           <span>{product.price}</span>
 
           <p>{product.description}</p>
-          {/* disabled={isCreatingCheckoutSession} */}
-          <button onClick={handleBuyButton}>
+          <button onClick={handleBuyButton} disabled={isCreatingCheckoutSession} >
             Comprar agora
           </button>
         </ProductDetails>

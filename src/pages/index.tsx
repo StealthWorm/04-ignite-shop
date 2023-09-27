@@ -64,7 +64,7 @@ export default function Home({ products }: HomeProps) {
 }
 
 /* 
-  next fonciona com um servidor NODE entre o front e o back, que "guarda" informações para serem exibidas sem que
+  next funciona com um servidor NODE entre o front e o back, que "guarda" informações para serem exibidas sem que
   seja preciso realizar outra requisição ao servidor. Para acessar esses dados do servidor, usamos as props
   GetStaticProps e GetServerSideProps
 
