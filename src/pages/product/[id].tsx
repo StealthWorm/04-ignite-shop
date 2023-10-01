@@ -49,7 +49,6 @@ export default function Product({ product }: ProductProps) {
     console.log(product.defaultPriceId)
   }
 
-
   return (
     <>
       <Head>
@@ -67,7 +66,7 @@ export default function Product({ product }: ProductProps) {
 
           <p>{product.description}</p>
           <button onClick={handleBuyButton} disabled={isCreatingCheckoutSession} >
-            Comprar agora
+            Colocar na sacola
           </button>
         </ProductDetails>
       </ProductContainer>

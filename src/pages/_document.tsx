@@ -13,7 +13,7 @@ export default function Document() {
       </Head>
       <body>
         {/* Main é como se fosse o "root" que é carregado no index.html do react */}
-        <Main /> 
+        <Main />
         {/* em qual local do HTML queremos carregar os scripts */}
         <NextScript />
       </body>

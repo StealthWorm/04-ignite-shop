@@ -6,10 +6,13 @@ import Link from "next/link"
 import { useKeenSlider } from 'keen-slider/react'
 
 import { stripe } from "../lib/stripe"
-import { HomeContainer, Product, Button } from "../styles/pages/home"
+import { HomeContainer, Product, BagContainer, ButtonClose, List, ListItem } from "../styles/pages/home"
 
 import 'keen-slider/keen-slider.min.css'
 import Stripe from "stripe"
+import { Handbag, X } from "@phosphor-icons/react"
+import { useContext, useState } from "react"
+import { ProductsContext } from "../contexts/ProductsContext"
 
 interface HomeProps {
   products: {
@@ -17,10 +20,13 @@ interface HomeProps {
     name: string
     imageUrl: string
     price: string
+    quantity: number
   }[]
 }
 
 export default function Home({ products }: HomeProps) {
+  const { isBagOpen, openBagModal } = useContext(ProductsContext)
+
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 3,
@@ -28,15 +34,13 @@ export default function Home({ products }: HomeProps) {
     }
   });
 
+  function handleOpenBag() { openBagModal() }
+
   return (
     <>
       <Head>
         <title>Home | Ignite Shop</title>
       </Head>
-
-      {/* <Button>
-        <span>Enviar</span>
-      </Button> */}
 
       <HomeContainer ref={sliderRef} className="keen-slider">
         {products.map(product => {
@@ -51,14 +55,78 @@ export default function Home({ products }: HomeProps) {
                 <Image src={product.imageUrl} blurDataURL={product.imageUrl} width={520} height={480} alt="" placeholder="blur" />
 
                 <footer>
-                  <strong>{product.name}</strong>
-                  <span>{product.price}</span>
+                  <div>
+                    <strong>{product.name}</strong>
+                    <span>{product.price}</span>
+                  </div>
+                  <button>
+                    <Handbag size={32} weight="bold" />
+                  </button>
                 </footer>
               </Product>
             </Link>
           )
         })}
       </HomeContainer>
+
+      <BagContainer visible={isBagOpen}>
+        <header>
+          <ButtonClose onClick={handleOpenBag}>
+            <X size={24} weight="bold" />
+          </ButtonClose>
+        </header>
+
+        <main>
+          <h3>Sacola de compras</h3>
+          <List>
+            <ListItem>
+              <img src='https://github.com/StealthWorm.png' alt="" width={94} height={94} />
+              {/* <Image src='https://github.com/StealthWorm.png' blurDataURL='https://github.com/StealthWorm.png' width={94} height={94} alt="" placeholder="blur" /> */}
+              <main>
+                <div>
+                  <p>Camiseta Beyond the Limits</p>
+                  <strong>R$ 79,90</strong>
+                </div>
+                <button>Remover</button>
+              </main>
+            </ListItem>
+            <ListItem>
+              <img src='https://github.com/StealthWorm.png' alt="" width={94} height={94} />
+              {/* <Image src='https://github.com/StealthWorm.png' blurDataURL='https://github.com/StealthWorm.png' width={94} height={94} alt="" placeholder="blur" /> */}
+              <main>
+                <div>
+                  <p>Camiseta Beyond the Limits</p>
+                  <strong>R$ 79,90</strong>
+                </div>
+                <button>Remover</button>
+              </main>
+            </ListItem>
+            <ListItem>
+              <img src='https://github.com/StealthWorm.png' alt="" width={94} height={94} />
+              {/* <Image src='https://github.com/StealthWorm.png' blurDataURL='https://github.com/StealthWorm.png' width={94} height={94} alt="" placeholder="blur" /> */}
+              <main>
+                <div>
+                  <p>Camiseta Beyond the Limits</p>
+                  <strong>R$ 79,90</strong>
+                </div>
+                <button>Remover</button>
+              </main>
+            </ListItem>
+          </List>
+        </main>
+
+        <footer>
+          <div>
+            <span>Quantidade</span>
+            <span>2 itens</span>
+          </div>
+          <div>
+            <strong>Valor total</strong>
+            <strong>R$ 270,00</strong>
+          </div>
+          <button>Finalizar compra</button>
+        </footer>
+      </BagContainer>
     </>
   )
 }
@@ -73,7 +141,7 @@ export default function Home({ products }: HomeProps) {
   */
 export const getStaticProps: GetStaticProps = async () => {
   // await new Promise((resolve) => setTimeout(resolve, 2000))
-  
+
   const response = await stripe.products.list({
     expand: ['data.default_price'] // estou usando "data".default_price pois é uma lista
   });
