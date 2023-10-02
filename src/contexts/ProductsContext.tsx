@@ -9,9 +9,12 @@ export interface Product {
 }
 
 interface ProductsContextType {
-  products: Product[],
-  openBagModal: () => void
-  isBagOpen: boolean
+  productsList: Product[],
+  isBagOpen: boolean,
+  totalAmount: number,
+  openBagModal: () => void,
+  addItemToCart: (item: Product) => void,
+  removeItemFromCart: (id: string) => void,
 }
 
 interface ProductsContextProviderProps {
@@ -21,16 +24,36 @@ interface ProductsContextProviderProps {
 export const ProductsContext = createContext({} as ProductsContextType)
 
 export function ProductsContextProvider({ children }: ProductsContextProviderProps) {
-  const [products, setProducts] = useState([])
+  const [productsList, setProductsList] = useState<Product[]>([])
   const [isBagOpen, setIsBagOpen] = useState(false);
 
   function openBagModal() {
     setIsBagOpen(!isBagOpen);
   }
 
+  const totalAmount = productsList.reduce((acc, item) => acc + parseFloat(item.price), 0);
+
+  function addItemToCart(item: Product) {
+    setProductsList((state) => [
+      ...state.filter(({ id }) => item.id !== id), {
+        ...item, quantity: 1
+      }])
+  }
+
+  function removeItemFromCart(id: string) {
+    setProductsList((state) => [...state.filter((item) => item.id !== id)])
+  }
+
   return (
     <ProductsContext.Provider
-      value={{ products, openBagModal, isBagOpen }}
+      value={{
+        productsList,
+        openBagModal,
+        isBagOpen,
+        addItemToCart,
+        totalAmount,
+        removeItemFromCart
+      }}
     >
       {children}
     </ProductsContext.Provider>

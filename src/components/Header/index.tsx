@@ -6,21 +6,27 @@ import logoImg from "../../assets/logo.svg"
 
 import { useContext } from "react"
 import { ProductsContext } from "../../contexts/ProductsContext"
+import Link from "next/link"
 
 export default function Header() {
-  const { openBagModal } = useContext(ProductsContext)
+  const { openBagModal, productsList } = useContext(ProductsContext)
 
-  const qtd = 1
+  const countItems = productsList.length
 
   function handleOpenBag() { openBagModal() }
 
   return (
     <HeaderContainer>
-      <Image src={logoImg} alt="" />
+      <Link href='/' prefetch={false}>
+        <Image src={logoImg} alt="" />
+      </Link>
 
-      <Button color={qtd > 0 ? 'full' : 'empty'} onClick={handleOpenBag}>
+      <Button color={countItems > 0 ? 'full' : 'empty'} onClick={handleOpenBag}>
         <Handbag size={24} weight="bold" />
-        <span>1</span>
+
+        {countItems > 0 &&
+          <span>{countItems}</span>
+        }
       </Button>
     </HeaderContainer>
   )

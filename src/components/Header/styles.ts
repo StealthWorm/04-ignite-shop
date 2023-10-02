@@ -18,6 +18,9 @@ export const Button = styled('button', {
   border: 0,
   cursor: 'pointer',
 
+  justifyContent: 'center',
+  alignItems: 'center',
+
   variants: {
     color: {
       empty: {

@@ -6,12 +6,12 @@ import Link from "next/link"
 import { useKeenSlider } from 'keen-slider/react'
 
 import { stripe } from "../lib/stripe"
-import { HomeContainer, Product, BagContainer, ButtonClose, List, ListItem } from "../styles/pages/home"
+import { HomeContainer, Product } from "../styles/pages/home"
 
 import 'keen-slider/keen-slider.min.css'
 import Stripe from "stripe"
-import { Handbag, X } from "@phosphor-icons/react"
-import { useContext, useState } from "react"
+import { Handbag } from "@phosphor-icons/react"
+import { useContext } from "react"
 import { ProductsContext } from "../contexts/ProductsContext"
 
 interface HomeProps {
@@ -25,7 +25,7 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
-  const { isBagOpen, openBagModal } = useContext(ProductsContext)
+  const { addItemToCart, productsList } = useContext(ProductsContext)
 
   const [sliderRef] = useKeenSlider({
     slides: {
@@ -34,7 +34,13 @@ export default function Home({ products }: HomeProps) {
     }
   });
 
-  function handleOpenBag() { openBagModal() }
+  function handleAddItemToCart(product: any) {
+    addItemToCart(product)
+  }
+
+  function productAlreadyInCart(productId: string) {
+    if (productsList.find(product => product.id === productId)) { return true }
+  }
 
   return (
     <>
@@ -57,9 +63,13 @@ export default function Home({ products }: HomeProps) {
                 <footer>
                   <div>
                     <strong>{product.name}</strong>
-                    <span>{product.price}</span>
+                    <span>{new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL'
+                    }).format(Number(product.price) / 100)
+                    }</span>
                   </div>
-                  <button>
+                  <button onClick={() => handleAddItemToCart(product)} disabled={productAlreadyInCart(product.id)}>
                     <Handbag size={32} weight="bold" />
                   </button>
                 </footer>
@@ -68,65 +78,6 @@ export default function Home({ products }: HomeProps) {
           )
         })}
       </HomeContainer>
-
-      <BagContainer visible={isBagOpen}>
-        <header>
-          <ButtonClose onClick={handleOpenBag}>
-            <X size={24} weight="bold" />
-          </ButtonClose>
-        </header>
-
-        <main>
-          <h3>Sacola de compras</h3>
-          <List>
-            <ListItem>
-              <img src='https://github.com/StealthWorm.png' alt="" width={94} height={94} />
-              {/* <Image src='https://github.com/StealthWorm.png' blurDataURL='https://github.com/StealthWorm.png' width={94} height={94} alt="" placeholder="blur" /> */}
-              <main>
-                <div>
-                  <p>Camiseta Beyond the Limits</p>
-                  <strong>R$ 79,90</strong>
-                </div>
-                <button>Remover</button>
-              </main>
-            </ListItem>
-            <ListItem>
-              <img src='https://github.com/StealthWorm.png' alt="" width={94} height={94} />
-              {/* <Image src='https://github.com/StealthWorm.png' blurDataURL='https://github.com/StealthWorm.png' width={94} height={94} alt="" placeholder="blur" /> */}
-              <main>
-                <div>
-                  <p>Camiseta Beyond the Limits</p>
-                  <strong>R$ 79,90</strong>
-                </div>
-                <button>Remover</button>
-              </main>
-            </ListItem>
-            <ListItem>
-              <img src='https://github.com/StealthWorm.png' alt="" width={94} height={94} />
-              {/* <Image src='https://github.com/StealthWorm.png' blurDataURL='https://github.com/StealthWorm.png' width={94} height={94} alt="" placeholder="blur" /> */}
-              <main>
-                <div>
-                  <p>Camiseta Beyond the Limits</p>
-                  <strong>R$ 79,90</strong>
-                </div>
-                <button>Remover</button>
-              </main>
-            </ListItem>
-          </List>
-        </main>
-
-        <footer>
-          <div>
-            <span>Quantidade</span>
-            <span>2 itens</span>
-          </div>
-          <div>
-            <strong>Valor total</strong>
-            <strong>R$ 270,00</strong>
-          </div>
-          <button>Finalizar compra</button>
-        </footer>
-      </BagContainer>
     </>
   )
 }
@@ -141,7 +92,6 @@ export default function Home({ products }: HomeProps) {
   */
 export const getStaticProps: GetStaticProps = async () => {
   // await new Promise((resolve) => setTimeout(resolve, 2000))
-
   const response = await stripe.products.list({
     expand: ['data.default_price'] // estou usando "data".default_price pois é uma lista
   });
@@ -153,10 +103,7 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-      }).format(price.unit_amount / 100),
+      price: price.unit_amount,
     }
   })
 
