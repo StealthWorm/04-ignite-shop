@@ -159,6 +159,11 @@ export const List = styled('div', {
   },
 })
 
+export const BagEmptyInfo = styled('strong', {
+  color: '$gray500',
+  fontSize: '$xl'
+})
+
 export const ButtonClose = styled('button', {
   display: 'flex',
   justifyContent: 'flex-end',

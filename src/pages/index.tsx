@@ -12,7 +12,7 @@ import 'keen-slider/keen-slider.min.css'
 import Stripe from "stripe"
 import { Handbag } from "@phosphor-icons/react"
 import { useContext } from "react"
-import { ProductsContext } from "../contexts/ProductsContext"
+import { IProduct, ProductsContext } from "../contexts/ProductsContext"
 
 interface HomeProps {
   products: {
@@ -21,6 +21,7 @@ interface HomeProps {
     imageUrl: string
     price: string
     quantity: number
+    defaultPriceId: string
   }[]
 }
 
@@ -34,7 +35,7 @@ export default function Home({ products }: HomeProps) {
     }
   });
 
-  function handleAddItemToCart(product: any) {
+  function handleAddItemToCart(product: IProduct) {
     addItemToCart(product)
   }
 
@@ -104,6 +105,7 @@ export const getStaticProps: GetStaticProps = async () => {
       name: product.name,
       imageUrl: product.images[0],
       price: price.unit_amount,
+      defaultPriceId: price.id
     }
   })
 

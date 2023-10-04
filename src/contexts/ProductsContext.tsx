@@ -1,20 +1,23 @@
 import { ReactNode, createContext, useEffect, useReducer, useState } from "react";
 
-export interface Product {
+export interface IProduct {
   id: string
   name: string
   imageUrl: string
   price: string
   quantity: number
+  description: string
+  defaultPriceId: string
 }
 
 interface ProductsContextType {
-  productsList: Product[],
+  productsList: IProduct[],
   isBagOpen: boolean,
   totalAmount: number,
   openBagModal: () => void,
-  addItemToCart: (item: Product) => void,
+  addItemToCart: (item: IProduct) => void,
   removeItemFromCart: (id: string) => void,
+  clearCart: () => void,
 }
 
 interface ProductsContextProviderProps {
@@ -24,7 +27,7 @@ interface ProductsContextProviderProps {
 export const ProductsContext = createContext({} as ProductsContextType)
 
 export function ProductsContextProvider({ children }: ProductsContextProviderProps) {
-  const [productsList, setProductsList] = useState<Product[]>([])
+  const [productsList, setProductsList] = useState<IProduct[]>([])
   const [isBagOpen, setIsBagOpen] = useState(false);
 
   function openBagModal() {
@@ -33,7 +36,7 @@ export function ProductsContextProvider({ children }: ProductsContextProviderPro
 
   const totalAmount = productsList.reduce((acc, item) => acc + parseFloat(item.price), 0);
 
-  function addItemToCart(item: Product) {
+  function addItemToCart(item: IProduct) {
     setProductsList((state) => [
       ...state.filter(({ id }) => item.id !== id), {
         ...item, quantity: 1
@@ -44,6 +47,10 @@ export function ProductsContextProvider({ children }: ProductsContextProviderPro
     setProductsList((state) => [...state.filter((item) => item.id !== id)])
   }
 
+  function clearCart() {
+    setProductsList([])
+  }
+
   return (
     <ProductsContext.Provider
       value={{
@@ -52,7 +59,8 @@ export function ProductsContextProvider({ children }: ProductsContextProviderPro
         isBagOpen,
         addItemToCart,
         totalAmount,
-        removeItemFromCart
+        removeItemFromCart,
+        clearCart,
       }}
     >
       {children}

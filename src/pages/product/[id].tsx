@@ -1,13 +1,12 @@
-import axios from "axios";
 import { GetStaticPaths, GetStaticProps } from "next"
 import Image from "next/future/image";
 import Head from "next/head";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import Stripe from "stripe";
 import { stripe } from "../../lib/stripe";
 import { ImageContainer, ProductContainer, ProductDetails } from "../../styles/pages/product"
 import { useRouter } from "next/router";
-import { ProductsContext } from "../../contexts/ProductsContext";
+import { IProduct, ProductsContext } from "../../contexts/ProductsContext";
 
 interface ProductProps {
   product: {
@@ -28,7 +27,7 @@ export default function Product({ product }: ProductProps) {
   //   return <p>Loading...</p>
   // }
   const { addItemToCart, productsList } = useContext(ProductsContext)
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
+  // const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
 
   // async function handleBuyButton() {
   //   try {
@@ -51,7 +50,7 @@ export default function Product({ product }: ProductProps) {
   //   console.log(product.defaultPriceId)
   // }
 
-  function handleAddItemToCart(product: any) {
+  function handleAddItemToCart(product: IProduct) {
     addItemToCart(product)
   }
 
