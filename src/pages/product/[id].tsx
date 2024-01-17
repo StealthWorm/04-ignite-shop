@@ -9,14 +9,7 @@ import { useRouter } from "next/router";
 import { IProduct, ProductsContext } from "../../contexts/ProductsContext";
 
 interface ProductProps {
-  product: {
-    id: string
-    name: string
-    imageUrl: string
-    price: number
-    description: string
-    defaultPriceId: string
-  }
+  product: IProduct
 }
 
 export default function Product({ product }: ProductProps) {

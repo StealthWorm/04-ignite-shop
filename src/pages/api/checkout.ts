@@ -15,7 +15,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const lineItems: IProduct[] = items.map((item: IProduct) => ({
     price: String(item.defaultPriceId),
-    quantity: item.quantity,
   }));
 
   // console.log(lineItems);
