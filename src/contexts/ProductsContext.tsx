@@ -6,6 +6,7 @@ export interface IProduct {
   imageUrl: string
   price: string
   quantity?: number
+  description?: string
   defaultPriceId: string
 }
 

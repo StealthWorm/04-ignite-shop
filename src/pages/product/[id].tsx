@@ -87,7 +87,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: [
-      { params: { id: 'prod_MLH5Wy0Y97hDAC' } }, // voce só preenche essa lista com os dados essenciais para serem buscados, evitando telas em branco, sendo possivel deixar vazio
+      { params: { id: 'prod_OfCZLdThFPufxy' } }, // voce só preenche essa lista com os dados essenciais para serem buscados, evitando telas em branco, sendo possivel deixar vazio
     ],
     fallback: 'blocking', // não mostra nada em tela até ter algo para mostrar
   }
