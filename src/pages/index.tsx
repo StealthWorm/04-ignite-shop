@@ -60,7 +60,7 @@ export default function Home({ products }: HomeProps) {
                     <span>{new Intl.NumberFormat('pt-BR', {
                       style: 'currency',
                       currency: 'BRL'
-                    }).format(Number(product.price) / 100)
+                    }).format(product.price / 100)
                     }</span>
                   </div>
                   <button onClick={() => handleAddItemToCart(product)} disabled={productAlreadyInCart(product.id)}>
@@ -85,21 +85,22 @@ export default function Home({ products }: HomeProps) {
   mas sim no momento em que o Next estiver criando uma versão estatica(em cache) da página (ao rodar build, por exemplo)
   */
 export const getStaticProps: GetStaticProps = async () => {
-  // await new Promise((resolve) => setTimeout(resolve, 2000))
   const response = await stripe.products.list({
     expand: ['data.default_price'] // estou usando "data".default_price pois é uma lista
   });
 
-  const products = response.data.map(product => {
+  const products: IProduct[] = response.data.map(product => {
     const price = product.default_price as Stripe.Price;
 
-    return {
+    const mappedProduct: IProduct = {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
       price: price.unit_amount,
-      defaultPriceId: price.id
+      defaultPriceId: price.id,
     }
+
+    return mappedProduct;
   })
 
   return {

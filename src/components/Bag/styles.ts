@@ -152,7 +152,7 @@ export const List = styled('div', {
   gap: '1.5rem',
   marginTop: '2rem',
   maxHeight: '20rem',
-  overflowY: 'scroll',
+  overflowY: 'auto',
 
   [`& + ${ListItem}`]: {
     marginTop: '2rem',
