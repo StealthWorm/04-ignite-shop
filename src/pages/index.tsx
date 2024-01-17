@@ -15,14 +15,7 @@ import { useContext } from "react"
 import { IProduct, ProductsContext } from "../contexts/ProductsContext"
 
 interface HomeProps {
-  products: {
-    id: string
-    name: string
-    imageUrl: string
-    price: string
-    quantity: number
-    defaultPriceId: string
-  }[]
+  products: IProduct[]
 }
 
 export default function Home({ products }: HomeProps) {
