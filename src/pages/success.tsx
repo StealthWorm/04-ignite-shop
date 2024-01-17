@@ -5,7 +5,6 @@ import Link from "next/link";
 import Stripe from "stripe";
 import { stripe } from "../lib/stripe";
 import { ImageContainer, ImagesProducts, SuccessContainer } from "../styles/pages/success";
-import { IProduct } from "../contexts/ProductsContext";
 
 interface SuccessProps {
   costumerName: string;
@@ -75,7 +74,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     expand: ['line_items', 'line_items.data.price.product']
   });
 
-  console.log(session.line_items.data)
+  // console.log(session.line_items.data)
   const costumerName = session.customer_details.name;
   // const product = session.line_items.data[0].price.product as Stripe.Product;
 

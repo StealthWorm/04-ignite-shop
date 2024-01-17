@@ -4,11 +4,11 @@ import Head from 'next/head'
 import Link from "next/link"
 
 import { useKeenSlider } from 'keen-slider/react'
+import 'keen-slider/keen-slider.min.css'
 
 import { stripe } from "../lib/stripe"
 import { HomeContainer, Product } from "../styles/pages/home"
 
-import 'keen-slider/keen-slider.min.css'
 import Stripe from "stripe"
 import { Handbag } from "@phosphor-icons/react"
 import { useContext } from "react"
@@ -52,7 +52,7 @@ export default function Home({ products }: HomeProps) {
             */
             <Link href={`/product/${product.id}`} key={product.id} prefetch={false}>
               <Product className="keen-slider__slide">
-                <Image src={product.imageUrl} blurDataURL={product.imageUrl} width={520} height={480} alt="" placeholder="blur" />
+                <Image priority src={product.imageUrl} blurDataURL={product.imageUrl} width={520} height={480} alt="" placeholder="blur" />
 
                 <footer>
                   <div>
@@ -60,7 +60,7 @@ export default function Home({ products }: HomeProps) {
                     <span>{new Intl.NumberFormat('pt-BR', {
                       style: 'currency',
                       currency: 'BRL'
-                    }).format(product.price / 100)
+                    }).format(Number(product.price) / 100)
                     }</span>
                   </div>
                   <button onClick={() => handleAddItemToCart(product)} disabled={productAlreadyInCart(product.id)}>
@@ -96,7 +96,7 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: price.unit_amount,
+      price: String(price.unit_amount),
       defaultPriceId: price.id,
     }
 

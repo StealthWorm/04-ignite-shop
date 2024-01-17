@@ -66,7 +66,7 @@ export default function Product({ product }: ProductProps) {
       {/* Product: {JSON.stringify(query)} */}
       <ProductContainer>
         <ImageContainer>
-          <Image src={product.imageUrl} width={520} height={480} alt="" />
+          <Image src={product.imageUrl} width={520} height={480} alt="" priority />
         </ImageContainer>
 
         <ProductDetails>

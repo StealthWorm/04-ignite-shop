@@ -14,11 +14,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const lineItems: IProduct[] = items.map((item: IProduct) => ({
-    price: item.defaultPriceId,
+    price: String(item.defaultPriceId),
     quantity: item.quantity,
   }));
 
-  console.log(lineItems);
+  // console.log(lineItems);
 
   const successUrl = `${process.env.NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`;
   const cancelUrl = `${process.env.NEXT_URL}/`;

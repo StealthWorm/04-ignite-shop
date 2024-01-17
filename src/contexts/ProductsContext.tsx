@@ -4,7 +4,7 @@ export interface IProduct {
   id: string
   name: string
   imageUrl: string
-  price: number
+  price: string
   quantity?: number
   description?: string
   defaultPriceId: string
@@ -34,7 +34,7 @@ export function ProductsContextProvider({ children }: ProductsContextProviderPro
     setIsBagOpen(!isBagOpen);
   }
 
-  const totalAmount = productsList.reduce((acc, item) => acc + item.price, 0);
+  const totalAmount = productsList.reduce((acc, item) => acc + parseFloat(item.price), 0);
 
   function addItemToCart(item: IProduct) {
     setProductsList((state) => [
