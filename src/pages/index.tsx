@@ -98,6 +98,7 @@ export const getStaticProps: GetStaticProps = async () => {
       imageUrl: product.images[0],
       price: String(price.unit_amount),
       defaultPriceId: price.id,
+      description: ''
     }
 
     return mappedProduct;
