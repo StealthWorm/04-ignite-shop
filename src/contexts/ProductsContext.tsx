@@ -38,8 +38,10 @@ export function ProductsContextProvider({ children }: ProductsContextProviderPro
 
   function addItemToCart(item: IProduct) {
     setProductsList((state) => [
-      ...state.filter(({ id }) => item.id !== id), {
-        ...item, quantity: 1
+      ...state.filter(prod => item.id !== prod.id), {
+        ...item, 
+        quantity: 1, 
+        description: item.description
       }])
   }
 
