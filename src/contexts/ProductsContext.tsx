@@ -7,7 +7,7 @@ export interface IProduct {
   price: string
   quantity?: number
   description?: string
-  defaultPriceId: string
+  defaultPriceId?: string
 }
 
 interface ProductsContextType {
