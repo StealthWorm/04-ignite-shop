@@ -15,9 +15,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const lineItems: IProduct[] = items.map((item: IProduct) => ({
     price: String(item.defaultPriceId),
+    quantity: item.quantity || 1,
   }));
 
-  // console.log(lineItems);
+  console.log(lineItems);
 
   const successUrl = `${process.env.NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`;
   const cancelUrl = `${process.env.NEXT_URL}/`;
@@ -25,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const checkoutSession = await stripe.checkout.sessions.create({
     success_url: successUrl,
     cancel_url: cancelUrl,
-    mode: 'payment',
+    mode: 'payment', // tipo de compra (payment = pagou uma vez só pelo produto)
     line_items: lineItems
     // line_items: [
     //   {

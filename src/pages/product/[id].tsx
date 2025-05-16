@@ -4,9 +4,10 @@ import Head from "next/head";
 import { useContext } from "react";
 import Stripe from "stripe";
 import { stripe } from "../../lib/stripe";
-import { ImageContainer, ProductContainer, ProductDetails } from "../../styles/pages/product"
+import { ImageContainer, ProductContainer, ProductDetails, FooterContainer } from "../../styles/pages/product"
 import { useRouter } from "next/router";
 import { IProduct, ProductsContext } from "../../contexts/ProductsContext";
+import { formatCurrency } from "../../../utils/formatCurrency";
 
 interface ProductProps {
   product: IProduct
@@ -47,9 +48,7 @@ export default function Product({ product }: ProductProps) {
     addItemToCart(product)
   }
 
-  function productAlreadyInCart() {
-    if (productsList.find(item => item.id === product.id)) { return true }
-  }
+  const productAlreadyInCartCount = productsList.find(item => item.id === product.id)?.quantity || 0
 
   return (
     <>
@@ -64,17 +63,18 @@ export default function Product({ product }: ProductProps) {
 
         <ProductDetails>
           <h1>{product.name}</h1>
-          <span>{new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-          }).format(Number(product.price) / 100)
-          }</span>
+          <span>{formatCurrency(Number(product.price) / 100)}</span>
 
           <p>{product.description}</p>
-          {/* disabled={isCreatingCheckoutSession} */}
-          <button onClick={() => handleAddItemToCart(product)} disabled={productAlreadyInCart()}>
-            Colocar na sacola
-          </button>
+
+          <FooterContainer>
+            <button onClick={() => handleAddItemToCart(product)} className="flex items-center gap-2">
+              Colocar na sacola
+            </button>
+            {productAlreadyInCartCount > 0 &&
+              <span className="text-zinc-400 text-sm">x {productAlreadyInCartCount}</span>
+            }
+          </FooterContainer>
         </ProductDetails>
       </ProductContainer>
     </>

@@ -10,7 +10,7 @@ import { stripe } from "../lib/stripe"
 import { HomeContainer, Product } from "../styles/pages/home"
 
 import Stripe from "stripe"
-import { Handbag } from "@phosphor-icons/react"
+import { HandbagIcon } from "@phosphor-icons/react"
 import { useContext } from "react"
 import { IProduct, ProductsContext } from "../contexts/ProductsContext"
 
@@ -63,8 +63,8 @@ export default function Home({ products }: HomeProps) {
                     }).format(Number(product.price) / 100)
                     }</span>
                   </div>
-                  <button onClick={() => handleAddItemToCart(product)} disabled={productAlreadyInCart(product.id)}>
-                    <Handbag size={32} weight="bold" />
+                  <button onClick={() => handleAddItemToCart(product)} >
+                    <HandbagIcon size={32} weight="bold" />
                   </button>
                 </footer>
               </Product>
@@ -98,6 +98,7 @@ export const getStaticProps: GetStaticProps = async () => {
       imageUrl: product.images[0],
       price: String(price.unit_amount),
       defaultPriceId: price.id,
+      description: ''
     }
 
     return mappedProduct;

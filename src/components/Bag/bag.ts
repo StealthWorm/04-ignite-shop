@@ -95,8 +95,8 @@ export const ListItem = styled('div', {
   img: {
     borderRadius: '8px',
     background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
-    maxHeight: 94,
-    minWidth: 140,
+    maxHeight: 80,
+    minWidth: 250,
   },
 
   main: {
@@ -107,9 +107,10 @@ export const ListItem = styled('div', {
     gap: '.5rem',
     justifyContent: 'space-between',
 
-    div: {
-      display: 'flex',
-      flexDirection: 'column',
+    'div:last-child': {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
     },
 
     p: {
@@ -123,26 +124,6 @@ export const ListItem = styled('div', {
       fontWeight: 'bold',
       lineHeight: 1.6,
     },
-
-    button: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'left',
-      gap: '10px',
-      color: '$green500',
-      backgroundColor: 'transparent',
-      fontSize: '1rem',
-      fontWeight: 'bold',
-      lineHeight: 1.6,
-      textAlign: 'left',
-      border: 0,
-      cursor: 'pointer',
-
-      '&:hover': {
-        transition: 'all 0.5s',
-        color: '$green300',
-      }
-    }
   }
 })
 
@@ -171,4 +152,50 @@ export const ButtonClose = styled('button', {
   backgroundColor: 'transparent',
   color: '$gray500',
   cursor: 'pointer',
+})
+
+export const ButtonContainer = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '1rem',
+  width: '100%',
+  justifyContent: 'space-between',
+
+  button: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '$green500',
+    backgroundColor: 'transparent',
+    fontSize: '1rem',
+    fontWeight: 'bold',
+    lineHeight: 1.6,
+    border: 0,
+    cursor: 'pointer',
+    width: '100%',
+
+    '&:hover': {
+      transition: 'all 0.5s',
+      color: '$green300',
+    }
+  },
+
+  span: {
+    color: '$gray300',
+    fontSize: '$md',
+    minWidth: '1.5rem',
+    textAlign: 'center',
+    width: 'auto',
+  }
+})
+
+export const QuantityControl = styled('div', {
+  display: 'flex',
+  flexDirection: 'row',
+  width: '100%',
+  alignItems: 'center',
+  gap: '0.5rem',
+  backgroundColor: '$gray900',
+  padding: '0.5rem',
+  borderRadius: '8px',
 })

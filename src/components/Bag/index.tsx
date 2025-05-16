@@ -1,11 +1,12 @@
 import axios from "axios"
-import { X } from "@phosphor-icons/react"
+import { MinusIcon, PlusIcon, XIcon } from "@phosphor-icons/react"
 
-import { BagContainer, BagEmptyInfo, ButtonClose, List, ListItem } from "./styles"
+import { BagContainer, BagEmptyInfo, ButtonClose, ButtonContainer, List, ListItem, QuantityControl } from "./bag"
 import Image from "next/image"
 
 import { useContext, useState } from "react"
 import { ProductsContext } from "../../contexts/ProductsContext"
+import { formatCurrency } from "../../../utils/formatCurrency"
 
 export default function Bag() {
   const {
@@ -14,7 +15,9 @@ export default function Bag() {
     productsList,
     totalAmount,
     removeItemFromCart,
-    clearCart
+    clearCart,
+    increaseItemQuantity,
+    decreaseItemQuantity
   } = useContext(ProductsContext)
 
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
@@ -54,7 +57,7 @@ export default function Bag() {
     <BagContainer visible={isBagOpen}>
       <header>
         <ButtonClose onClick={handleOpenBag}>
-          <X size={24} weight="bold" />
+          <XIcon size={24} weight="bold" />
         </ButtonClose>
       </header>
 
@@ -78,32 +81,37 @@ export default function Bag() {
                       <div>
                         <p>{product.name}</p>
                         <strong>
-                          {new Intl.NumberFormat('pt-BR', {
-                            style: 'currency',
-                            currency: 'BRL'
-                          }).format(Number(product.price) / 100)
-                          }
+                          {formatCurrency(Number(product.price) / 100)}
                         </strong>
                       </div>
-                      <button onClick={() => handleRemoveItemFromCart(product.id)}>Remover</button>
+                      <ButtonContainer>
+                        <QuantityControl>
+                          <button onClick={() => decreaseItemQuantity(product.id)}>
+                            <MinusIcon size={16} weight="bold" />
+                          </button>
+                          <span>{product.quantity || 1}</span>
+                          <button onClick={() => increaseItemQuantity(product.id)}>
+                            <PlusIcon size={16} weight="bold" />
+                          </button>
+                        </QuantityControl>
+                        <button onClick={() => handleRemoveItemFromCart(product.id)}>Remover</button>
+                      </ButtonContainer>
                     </main>
                   </ListItem>
                 )
               })
-
             )
             : (
               <BagEmptyInfo>Nada para mostrar ainda  {';('}</BagEmptyInfo>
             )
           }
-
         </List>
       </main>
 
       <footer>
         <div>
           <span>Quantidade</span>
-          <span>{productsList.length} itens</span>
+          <span>{productsList.reduce((acc, item) => acc + (item.quantity || 1), 0)} itens</span>
         </div>
         <div>
           <strong>Valor total</strong>

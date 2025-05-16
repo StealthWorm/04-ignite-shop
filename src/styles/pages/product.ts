@@ -36,22 +36,27 @@ export const ProductDetails = styled('div', {
     color: '$gray300',
   },
 
-  span: {
-    marginTop: '1rem',
-    display: 'block',
-    fontSize: '$2xl',
-    color: '$green300',
-  },
-
   p: {
     marginTop: '2.5rem',
     fontSize: '$md',
+    height: '100%',
     lineHeight: 1.6,
     color: '$gray300',
   },
+})
+
+export const FooterContainer = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: '1rem',
+  width: '100%',
 
   button: {
-    marginTop: 'auto',
+    display: 'flex',
+    width: '90%',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '$green500',
     border: 0,
     color: '$white',
@@ -68,6 +73,20 @@ export const ProductDetails = styled('div', {
 
     '&:not(:disabled):hover': {
       backgroundColor: '$green300',
-    }
+    },
   },
+
+  span: {
+    display: 'flex',
+    width: '10%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '$gray100',
+    borderRadius: 8,
+    backgroundColor: '$gray800',
+    fontWeight: 'bold',
+    fontSize: '$sm',
+    border: '1px solid $green300',
+  }
 })

@@ -1,4 +1,4 @@
-import { Handbag } from "@phosphor-icons/react"
+import { Handbag, HandbagIcon } from "@phosphor-icons/react"
 import { Button, HeaderContainer } from "./styles"
 
 import Image from "next/future/image"
@@ -9,9 +9,7 @@ import { ProductsContext } from "../../contexts/ProductsContext"
 import Link from "next/link"
 
 export default function Header() {
-  const { openBagModal, productsList } = useContext(ProductsContext)
-
-  const countItems = productsList.length
+  const { openBagModal, totalItems } = useContext(ProductsContext)
 
   function handleOpenBag() { openBagModal() }
 
@@ -21,11 +19,11 @@ export default function Header() {
         <Image src={logoImg} alt="" />
       </Link>
 
-      <Button color={countItems > 0 ? 'full' : 'empty'} onClick={handleOpenBag}>
-        <Handbag size={24} weight="bold" />
+      <Button color={totalItems > 0 ? 'full' : 'empty'} onClick={handleOpenBag}>
+        <HandbagIcon size={24} weight="bold" />
 
-        {countItems > 0 &&
-          <span>{countItems}</span>
+        {totalItems > 0 &&
+          <span>{totalItems}</span>
         }
       </Button>
     </HeaderContainer>
